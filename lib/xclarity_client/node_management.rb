@@ -35,10 +35,5 @@ module XClarityClient
       response = do_put("#{Node::BASE_URI}/#{uuid}", request)
     end
 
-    def set_loc_led_state(uuid, state, name = "Identify")
-      request = JSON.generate({:leds => [{:name => name, :state => state}]})
-      response = do_put("#{Node::BASE_URI}/#{uuid}", request)
-    end
-
   end
 end
