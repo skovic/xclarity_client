@@ -9,7 +9,7 @@ module XClarityClient
     def discover_nodes(opts = {})
       NodeManagement.new(@connection).population opts
     end
-        
+    
     def power_on_node(uuid = '')
         NodeManagement.new(@connection).set_node_power_state(uuid, "powerOn")
     end
@@ -96,15 +96,6 @@ module XClarityClient
 
     def fetch_power_supplies(uuids = nil, includeAttributes = nil, excludeAttributes = nil)
       PowerSupplyManagement.new(@connection).get_object(uuids, includeAttributes, excludeAttributes, PowerSupply)
-    end
-
-    def turn_on_loc_led(uuid = "", enableBlinking = false)
-      state = enableBlinking ? "Blinking" : "On"
-      NodeManagement.new(@connection).set_loc_led_state(uuid, state)
-    end
-
-    def turn_off_loc_led(uuid = "")
-      NodeManagement.new(@connection).set_loc_led_state(uuid, "Off")
     end
     
     def discover_events
