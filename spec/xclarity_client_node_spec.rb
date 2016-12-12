@@ -112,7 +112,6 @@ describe XClarityClient do
     it 'should power down system' do
       response = @client.power_off_node(@uuidArray[0])
       expect(response.status).to eq(200)
-
     end
   end
 
