@@ -1,12 +1,25 @@
 module XClarityClient
+
   class Client
 
     def initialize(connection)
       @connection = connection
     end
-
+    
     def discover_nodes(opts = {})
       NodeManagement.new(@connection).population opts
+    end
+        
+    def power_on_node(uuid = '')
+        NodeManagement.new(@connection).set_node_power_state(uuid, "powerOn")
+    end
+
+    def power_off_node(uuid = '')
+        NodeManagement.new(@connection).set_node_power_state(uuid, "powerOff")
+    end
+
+    def power_restart_node(uuid = '')
+        NodeManagement.new(@connection).set_node_power_state(uuid, "powerCycleSoftGrace")
     end
 
     def discover_scalableComplexes(opts = {})
@@ -84,5 +97,32 @@ module XClarityClient
     def fetch_power_supplies(uuids = nil, includeAttributes = nil, excludeAttributes = nil)
       PowerSupplyManagement.new(@connection).get_object(uuids, includeAttributes, excludeAttributes, PowerSupply)
     end
+
+    def turn_on_loc_led(uuid = "", enableBlinking = false)
+      state = enableBlinking ? "Blinking" : "On"
+      NodeManagement.new(@connection).set_loc_led_state(uuid, state)
+    end
+
+    def turn_off_loc_led(uuid = "")
+      NodeManagement.new(@connection).set_loc_led_state(uuid, "Off")
+    end
+    
+    def discover_events
+      EventManagement.new(@connection).population
+    end
+
+    def fetch_events(opts = {})
+      EventManagement.new(@connection).get_object_with_opts(opts, Event)
+    end
+
+    def turn_on_loc_led(uuid = "", enableBlinking = false)
+      state = enableBlinking ? "Blinking" : "On"
+      NodeManagement.new(@connection).set_loc_led_state(uuid, state)
+    end
+
+    def turn_off_loc_led(uuid = "")
+      NodeManagement.new(@connection).set_loc_led_state(uuid, "Off")
+    end
+    
   end
 end

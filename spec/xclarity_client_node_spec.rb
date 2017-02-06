@@ -108,4 +108,49 @@ describe XClarityClient do
       end
     end
   end
+
+  describe 'Get /node' do
+    it 'should power down system' do
+      response = @client.set_node_power_state(@uuidArray[0])
+      expect(response.status).to eq(200)
+
+      puts response.headers.location
+
+    end
+  end
+
+  describe 'PUT /nodes/UUID' do
+    context 'with a leds object' do
+      context 'with state == "On" and name == "Identify"' do
+        it 'turns on the location led' do
+          response = @client.turn_on_loc_led(@uuidArray[0])
+          uri = "http://example.com/nodes/#{@uuidArray[0]}"
+          requestBody = {"body" => {"leds" => [{"name" => "Identify",
+                                                "state" => "On"}]}}
+          expect(a_request(:put, uri).with(requestBody)).to have_been_made
+        end
+      end
+      
+      context 'with state == "Off" and name == "Identify"' do
+        it 'turns off the location led' do
+          response = @client.turn_off_loc_led(@uuidArray[0])
+          uri = "http://example.com/nodes/#{@uuidArray[0]}"
+          requestBody = {"body" => {"leds" => [{"name" => "Identify",
+                                                "state" => "Off"}]}}
+          expect(a_request(:put, uri).with(requestBody)).to have_been_made
+        end
+      end
+
+      context 'with state == "Blinking" and name == "Identify"' do
+        it 'turns on the blinking location led' do
+          response = @client.turn_on_loc_led(@uuidArray[0], true)
+          uri = "http://example.com/nodes/#{@uuidArray[0]}"
+          requestBody = {"body" => {"leds" => [{"name" => "Identify",
+                                                "state" => "Blinking"}]}}
+          expect(a_request(:put, uri).with(requestBody)).to have_been_made
+        end
+      end
+    end
+  end
+
 end
